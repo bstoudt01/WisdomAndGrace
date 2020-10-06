@@ -44,8 +44,11 @@ export function UserProfileProvider(props) {
       });
   };
 
+  //verify token recieved from client was provided by firebase by checking with firebase
+  //used alot... when accessing an authorized route
   const getToken = () => firebase.auth().currentUser.getIdToken();
 
+  //used in login
   const getUserProfile = (firebaseUserId) => {
     return getToken().then((token) =>
       fetch(`${apiUrl}/${firebaseUserId}`, {
@@ -56,6 +59,7 @@ export function UserProfileProvider(props) {
       }).then(resp => resp.json()));
   };
 
+  //used in registration
   const saveUser = (userProfile) => {
     return getToken().then((token) =>
       fetch(apiUrl, {
@@ -72,7 +76,7 @@ export function UserProfileProvider(props) {
     <UserProfileContext.Provider value={{ isLoggedIn, login, logout, register, getToken }}>
       {isFirebaseReady
         ? props.children
-        : <Spinner className="app-spinner dark"/>}
+        : <Spinner className="app-spinner dark" />}
     </UserProfileContext.Provider>
   );
 }
